@@ -1,6 +1,8 @@
 package com.shehan.E_Commerce_Backend.Services;
 
+import com.shehan.E_Commerce_Backend.DTOs.ProductDto;
 import com.shehan.E_Commerce_Backend.DTOs.UserDto;
+import com.shehan.E_Commerce_Backend.Mappers.ProductMapper;
 import com.shehan.E_Commerce_Backend.entities.User;
 import com.shehan.E_Commerce_Backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -15,6 +17,8 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final ProductMapper productMapper;
 
     // Allowed fields for sorting
     private static final Set<String> ALLOWED_SORT_FIELDS =
@@ -44,4 +48,5 @@ public class UserService {
                         user.getEmail()))
                 .orElse(null);
     }
-}
+
+  }
