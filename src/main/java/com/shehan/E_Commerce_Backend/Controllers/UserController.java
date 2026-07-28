@@ -7,10 +7,7 @@ import com.shehan.E_Commerce_Backend.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -19,9 +16,9 @@ public class UserController {
     UserService userServices;
 
     @GetMapping("/users")
-    public Iterable<UserDto> getAllUsers() {
+    public Iterable<UserDto> getAllUsers(@RequestParam (defaultValue = "id") String sort) {
 
-        return userServices.findAllUsers();
+        return userServices.findAllUsers(sort);
     }
 
     @GetMapping("/users/{id}")
