@@ -1,7 +1,9 @@
 package com.shehan.E_Commerce_Backend.Controllers;
 
 
+import com.shehan.E_Commerce_Backend.DTOs.RegisterUserDto;
 import com.shehan.E_Commerce_Backend.DTOs.UserDto;
+import com.shehan.E_Commerce_Backend.Mappers.UserMapper;
 import com.shehan.E_Commerce_Backend.Services.UserService;
 import com.shehan.E_Commerce_Backend.entities.User;
 import lombok.AllArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     UserService userServices;
+    private final UserMapper userMapper;
 
     @GetMapping("/users")
     public Iterable<UserDto> getAllUsers(@RequestParam (defaultValue = "id") String sort) {
@@ -33,5 +36,10 @@ public class UserController {
            {
             return ResponseEntity.ok(user);
         }
+    }
+
+    @PostMapping("/users")
+    public UserDto createUser(@RequestBody RegisterUserDto request) {
+        return userServices.createUser(request);
     }
 }
