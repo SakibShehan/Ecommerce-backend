@@ -1,6 +1,7 @@
 package com.shehan.E_Commerce_Backend.Controllers;
 
 
+import com.shehan.E_Commerce_Backend.DTOs.ChangePasswordDto;
 import com.shehan.E_Commerce_Backend.DTOs.RegisterUserDto;
 import com.shehan.E_Commerce_Backend.DTOs.UpdateUserDto;
 import com.shehan.E_Commerce_Backend.DTOs.UserDto;
@@ -75,6 +76,15 @@ public class UserController {
     {
 
         return userServices.DeleteUser(id);
+    }
+
+    @PostMapping("users/{id}/change-password")
+    public ResponseEntity<Void>ChangePassword (
+            @PathVariable Long id,
+            @RequestBody ChangePasswordDto changePasswordDto
+            )
+    {
+        return userServices.ChangePassword(id, changePasswordDto);
     }
 
 
