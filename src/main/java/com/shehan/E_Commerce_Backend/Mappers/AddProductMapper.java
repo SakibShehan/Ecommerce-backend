@@ -1,20 +1,18 @@
 package com.shehan.E_Commerce_Backend.Mappers;
+
 import com.shehan.E_Commerce_Backend.DTOs.AddProductDto;
 import com.shehan.E_Commerce_Backend.DTOs.ProductDto;
-import com.shehan.E_Commerce_Backend.DTOs.RegisterUserDto;
 import com.shehan.E_Commerce_Backend.entities.Product;
 import com.shehan.E_Commerce_Backend.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+
 @Mapper(componentModel = "spring")
-public interface ProductMapper {
+public interface AddProductMapper {
+    @Mapping(target = "category", ignore = true)
+    Product toEntity(AddProductDto request);
 
 
-
-
-    @Mapping(target = "categoryId", source = "category.id")
-    ProductDto toDto(Product product);
-
-
+    AddProductDto toDto(Product product);
 }
