@@ -1,6 +1,6 @@
 package com.shehan.E_Commerce_Backend.Services;
 
-import com.shehan.E_Commerce_Backend.DTOs.RegisterUserDto;
+import com.shehan.E_Commerce_Backend.DTOs.UpdateUserDto;
 import com.shehan.E_Commerce_Backend.DTOs.UserDto;
 import com.shehan.E_Commerce_Backend.Mappers.ProductMapper;
 import com.shehan.E_Commerce_Backend.Mappers.UserMapper;
@@ -8,6 +8,7 @@ import com.shehan.E_Commerce_Backend.entities.User;
 import com.shehan.E_Commerce_Backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,15 +30,12 @@ public class UserService {
 
 
 
-    public UserDto createUser(RegisterUserDto request) {
-
-        User user = userMapper.toEntity(request);
+    public UserDto createUser(User user) {
 
         User savedUser = userRepository.save(user);
 
         return userMapper.toDto(savedUser);
     }
-
 
 
 
@@ -67,4 +65,33 @@ public class UserService {
                 .orElse(null);
     }
 
-  }
+    public ResponseEntity<UserDto> UpdateUser(Long id, UpdateUserDto request) {
+
+        var User= userRepository.findById(id).orElse(null);
+
+        if(User== null) return ResponseEntity.notFound().build();
+
+//        User.setName(request.getName());
+//        User.setEmail(request.getEmail());
+
+        userMapper.Update(request, User);
+        userRepository.save(User);
+
+        return ResponseEntity.ok(userMapper.toDto(User));
+
+    }
+
+    public <T> ResponseEntity<T> DeleteUser(Long id) {
+
+        var user= userRepository.findById(id).orElse(null);
+
+        if (user==null)
+        {
+            return ResponseEntity.notFound().build();
+        }
+
+        userRepository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
+    }
+}

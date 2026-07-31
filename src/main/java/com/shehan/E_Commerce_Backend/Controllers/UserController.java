@@ -2,6 +2,7 @@ package com.shehan.E_Commerce_Backend.Controllers;
 
 
 import com.shehan.E_Commerce_Backend.DTOs.RegisterUserDto;
+import com.shehan.E_Commerce_Backend.DTOs.UpdateUserDto;
 import com.shehan.E_Commerce_Backend.DTOs.UserDto;
 import com.shehan.E_Commerce_Backend.Mappers.UserMapper;
 import com.shehan.E_Commerce_Backend.Services.UserService;
@@ -10,6 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @AllArgsConstructor
@@ -39,7 +43,39 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public UserDto createUser(@RequestBody RegisterUserDto request) {
-        return userServices.createUser(request);
+    public ResponseEntity<UserDto> createUser(
+            @RequestBody RegisterUserDto request,
+            UriComponentsBuilder uriBuilder) {
+
+        User user = userMapper.toEntity(request);
+
+        UserDto userDto = userServices.createUser(user);
+
+        URI uri = uriBuilder
+                .path("/users/{id}")
+                .buildAndExpand(userDto.getId())
+                .toUri();
+
+        return ResponseEntity
+                .created(uri)
+                .body(userDto);
     }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<UserDto> UpdateUser (
+            @PathVariable( name ="id") Long id,
+            @RequestBody UpdateUserDto updateUserDto
+            )
+    {
+              return userServices.UpdateUser(id, updateUserDto);
+    }
+
+    @DeleteMapping("users/{id}")
+    public ResponseEntity<Void> DeleteUser( @PathVariable Long id)
+    {
+
+        return userServices.DeleteUser(id);
+    }
+
+
 }
